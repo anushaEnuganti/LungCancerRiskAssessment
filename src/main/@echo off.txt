@@ -1,0 +1,11 @@
+@echo off
+echo 🔄 Starting Spring Boot App...
+start cmd /k "cd /d C:\Users\Anusha\Documents\LungCancerAppRiskAssessment && mvn spring-boot:run"
+
+echo ⏳ Waiting for Spring Boot to start...
+timeout /t 10 /nobreak >nul
+
+echo 🌐 Starting LocalTunnel...
+lt --port 8081 --subdomain lungcancerriskdemo
+
+pause

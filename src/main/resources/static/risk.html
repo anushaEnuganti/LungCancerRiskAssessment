@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Risk Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('images/image for cancer.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            overflow-y: auto;
+            color: #fff;
+        }
+
+        .form-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px 40px;
+            margin: 40px 0;
+            border-radius: 15px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .form-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
+            color: #ffcc00;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            font-size: 15px;
+        }
+
+        .radio-group {
+            margin-top: 5px;
+        }
+
+        .radio-group label {
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: normal;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 14px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            display: none;
+            margin-top: 25px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+<div class="form-box">
+    <h2>Lung Cancer Risk Assessment</h2>
+    <form id="riskForm">
+        <label for="age">What is your age?</label>
+        <input type="number" id="age" required>
+
+        <label>What is your gender?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="gender" value="male" required> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
+            <label><input type="radio" name="gender" value="others"> Others</label>
+        </div>
+
+        <label>Do you have a smoking habit?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="smoker" value="yes" required> Yes</label>
+            <label><input type="radio" name="smoker" value="no"> No</label>
+        </div>
+
+        <label>Are you experiencing a persistent cough?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="cough" value="yes" required> Yes</label>
+            <label><input type="radio" name="cough" value="no"> No</label>
+        </div>
+
+        <label>Do you feel chest pain?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="chestPain" value="yes" required> Yes</label>
+            <label><input type="radio" name="chestPain" value="no"> No</label>
+        </div>
+
+        <label>Do you have breathlessness?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="breath" value="yes" required> Yes</label>
+            <label><input type="radio" name="breath" value="no"> No</label>
+        </div>
+
+        <label>Do you often feel fatigue or tiredness?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="fatigue" value="yes" required> Yes</label>
+            <label><input type="radio" name="fatigue" value="no"> No</label>
+        </div>
+
+        <label>Are you coughing up blood?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="coughingBlood" value="yes" required> Yes</label>
+            <label><input type="radio" name="coughingBlood" value="no"> No</label>
+        </div>
+
+        <label>Is there a family history of cancer?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="familyHistory" value="yes" required> Yes</label>
+            <label><input type="radio" name="familyHistory" value="no"> No</label>
+        </div>
+
+        <button type="submit">Check Risk</button>
+    </form>
+    <p id="result"></p>
+</div>
+
+<script>
+    document.getElementById('riskForm').onsubmit = async function(e) {
+        e.preventDefault();
+
+        function getRadioValue(name) {
+            const radios = document.getElementsByName(name);
+            for (const radio of radios) {
+                if (radio.checked) return radio.value;
+            }
+            return '';
+        }
+
+        const data = {
+            age: parseInt(document.getElementById('age').value),
+            gender: getRadioValue('gender'),
+            smoker: getRadioValue('smoker'),
+            cough: getRadioValue('cough'),
+            chestPain: getRadioValue('chestPain'),
+            breath: getRadioValue('breath'),
+            fatigue: getRadioValue('fatigue'),
+            coughingBlood: getRadioValue('coughingBlood'),
+            familyHistory: getRadioValue('familyHistory')
+        };
+
+        const res = await fetch('/api/assess', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const text = await res.text();
+        const resultPara = document.getElementById('result');
+        resultPara.innerText = "Result: " + text;
+        resultPara.style.display = 'block';
+    };
+</script>
+</body>
+</html>
+
+
+
+
+
+
