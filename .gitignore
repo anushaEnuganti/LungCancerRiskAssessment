@@ -1,0 +1,24 @@
+# Build and IDE files
+/target/
+/.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Executables and archives
+*.exe
+*.tar
+*.tar.gz
+*.tar.xz
+*.zip
+*.7z
+
+# Logs
+*.log
+
+# DB
+*.db
+*.h2.db
+
